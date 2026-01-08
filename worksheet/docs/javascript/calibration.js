@@ -219,12 +219,19 @@ function updateDimensionality() {
   dom = document.getElementById('yourCorrection');
   dom.innerHTML = '(' + String((xerror * 100).toFixed(2)) + '%, ' + String((yerror * 100).toFixed(2)) + '%)'
 
+  // guard against zero/NaN sigmas when showing number of sigmas and plotting
+  let xNumSigmaStr = (isFinite(xsigma) && xsigma !== 0) ? String((xerror / xsigma).toFixed(1)) : 'N/A';
+  document.getElementById('xNumSigma').innerHTML = xNumSigmaStr;
+
+  let yNumSigmaStr = (isFinite(ysigma) && ysigma !== 0) ? String((yerror / ysigma).toFixed(1)) : 'N/A';
+  document.getElementById('yNumSigma').innerHTML = yNumSigmaStr;
+
   data = document.getElementById('dimGraph').data;
   data[0]['x'] = [yerror * 100, xerror * 100];
-  data[0]['error_x']['array'] = [2 * ysigma * 100, 2 * xsigma * 100];
+  data[0]['error_x']['array'] = [isFinite(ysigma) ? 2 * ysigma * 100 : 0, isFinite(xsigma) ? 2 * xsigma * 100 : 0];
 
   data[1]['x'] = [yerror * 100, xerror * 100];
-  data[1]['error_x']['array'] = [ysigma * 100, xsigma * 100];
+  data[1]['error_x']['array'] = [isFinite(ysigma) ? ysigma * 100 : 0, isFinite(xsigma) ? xsigma * 100 : 0];
 
   Plotly.redraw('dimGraph');
 
@@ -233,20 +240,20 @@ function updateDimensionality() {
 function updateShrinkageFeedback() {
 
 
-  dimsCalibrated = (Math.abs(xerror) < 2 * xsigma) & (Math.abs(yerror) < 2 * ysigma);
+  dimsCalibrated = (Math.abs(xerror) < 2 * xsigma) && (Math.abs(yerror) < 2 * ysigma);
   tooBig = (xerror > 2 * xsigma) || (yerror > 2 * ysigma);
 
 
   let xysame = (Math.abs(xerror - yerror) < 2 * Math.sqrt(xsigma * xsigma + ysigma * ysigma));
-  let inbounds = (xerror < 3 * xsigma) & (yerror < 3 * ysigma) &
-    ((xerror - 2 * xsigma) > -0.016) &
+  let inbounds = (xerror < 3 * xsigma) && (yerror < 3 * ysigma) &&
+    ((xerror - 2 * xsigma) > -0.016) &&
     ((yerror - 2 * ysigma) > -0.016);
 
-  let inboundsMat = (xerror < 3 * xsigma) & (yerror < 3 * ysigma) &
-    ((xerror - 2 * xsigma) > -expectedShrinkage) &
+  let inboundsMat = (xerror < 3 * xsigma) && (yerror < 3 * ysigma) &&
+    ((xerror - 2 * xsigma) > -expectedShrinkage) &&
     ((yerror - 2 * ysigma) > -expectedShrinkage);
 
-  probableShrinkage = xysame & inbounds;
+  probableShrinkage = xysame && inbounds;
 
   document.getElementById('possibleShrinkage').style.display = "none";
   document.getElementById('printTooBig').style.display = "none";
@@ -255,7 +262,7 @@ function updateShrinkageFeedback() {
   if (dimsCalibrated) {
     // dimensions look good, suggest doing nothing
   }
-  else if (xysame & !tooBig & inbounds) {
+  else if (xysame && !tooBig && inbounds) {
     // possibly shrinkage, request info on material
     document.getElementById('possibleShrinkage').style.display = "";
 
@@ -308,17 +315,24 @@ function calculateDimensionality(rows) {
     let results = [mean[row], sigma[row], numValidMeasurements[row]];//meanAndStd(row, [3,4,5]);
     let nom = nominal[row];//Number(worksheet.getValueFromCoords(6,row));
 
-    if (!isNaN(results[0]) & !isNaN(nom)) // valid entry
+    if (!isNaN(results[0]) && !isNaN(nom) && numValidMeasurements[row] > 0) // valid entry
     {
       let del = (mean[row] - nom) / nom;
       sum += del;
-      // gradient term
-      let sigma2 = sigma[row] * sigma[row] + sigma0 * sigma0;
+      // variance of the mean for this row: (sigma_row^2 + sigma0^2) / m_i
+      let m = Math.max(numValidMeasurements[row], 1);
+      let sigma2 = ((isFinite(sigma[row]) ? sigma[row] * sigma[row] : 0) + sigma0 * sigma0) / m;
       numValid++;
+      // variance contribution for the fractional delta (del = (mean - nom)/nom)
       sumsq += sigma2 / (nom * nom);
     }
   }
-  return ([sum / numValid, Math.sqrt(sumsq / (numValid * numValid)), numValid]);
+  if (numValid === 0) {
+    return ([NaN, NaN, 0]);
+  }
+
+  // standard error of the mean of the deltas: sqrt(sum(variance_i)) / N
+  return ([sum / numValid, Math.sqrt(sumsq) / numValid, numValid]);
 
 }
 
@@ -379,7 +393,9 @@ function computeTotalLength(rows) {
 
   }
   let nominalSum = sumColumn(rows, 6);
-
+  if (nominalSum === 0) {
+    return NaN;
+  }
   return sum / nominalSum;
 }
 
@@ -388,12 +404,24 @@ function calculateSkew() {
   function sig2(start, end) {
     let s = sigma.slice(start, end);
     let n = nominal.slice(start, end);
+    let m = numValidMeasurements.slice(start, end);
     let sigma0 = 0;
-    s = mult(s, n.map((x) => x > 0));
     if (document.getElementById('sample_error').checked) {
       sigma0 = Number(document.getElementById('caliper_error').value);
     }
-    return (dot(s, s) + sigma0 * sigma0) / (calculateSum(n) * calculateSum(n));
+    let sumNom = calculateSum(n);
+    if (sumNom === 0) {
+      return NaN;
+    }
+    // sum variances of the means: Var(mean_i) = (sigma_i^2 + sigma0^2) / m_i
+    let sumVar = 0;
+    for (let ii = 0; ii < s.length; ii++) {
+      if (n[ii] > 0 && m[ii] > 0) {
+        let si = isFinite(s[ii]) ? s[ii] : 0;
+        sumVar += (si * si + sigma0 * sigma0) / m[ii];
+      }
+    }
+    return sumVar / (sumNom * sumNom);
 
   }
 
@@ -414,9 +442,17 @@ function calculateSkew() {
 
 
   let cosAlpha = (p * p - q * q) / (4 * a * b);
+  // guard rounding errors pushing value out of [-1,1]
+  if (!isFinite(cosAlpha)) {
+    return [NaN, NaN];
+  }
+  cosAlpha = Math.max(-1, Math.min(1, cosAlpha));
   let alphaRad = Math.acos(cosAlpha);
   alpha = alphaRad * 180 / Math.PI;
   let sinAlpha = Math.sin(alphaRad);
+  if (!isFinite(a) || !isFinite(b) || a === 0 || b === 0 || Math.abs(sinAlpha) < 1e-12) {
+    return [alpha, NaN];
+  }
   // gradient calculation
   let gradp = Math.abs(p / (2 * a * b * sinAlpha));
   let gradq = Math.abs(q / (2 * a * b * sinAlpha));
@@ -459,7 +495,8 @@ function updateSkew() {
   dom = document.getElementById('skewCorrection');
   dom.innerHTML = String((90 - alpha).toPrecision(3));
 
-  document.getElementById('skewNumSigmas').innerHTML = String(((90 - alpha) / alphaSigma).toPrecision(2));
+  let skewRatio = (isFinite(alphaSigma) && alphaSigma !== 0) ? Math.abs(90 - alpha) / alphaSigma : Infinity;
+  document.getElementById('skewNumSigmas').innerHTML = isFinite(skewRatio) ? String(skewRatio.toPrecision(2)) : 'N/A';
 
   document.getElementById('skew-1sigma').style.display = "none";
   document.getElementById('skew-2sigma').style.display = "none";
@@ -467,13 +504,13 @@ function updateSkew() {
   document.getElementById('skewFailure').style.display = "none";
 
   let str = '';
-  if ((Math.abs(alpha - 90) / alphaSigma) < 1) {
+  if (skewRatio < 1) {
     document.getElementById('skew-1sigma').style.display = "";
   }
-  else if ((Math.abs(alpha - 90) / alphaSigma) < 2) {
+  else if (skewRatio < 2) {
     document.getElementById('skew-2sigma').style.display = "";
   }
-  else if ((Math.abs(alpha - 90) / alphaSigma) < 3) {
+  else if (skewRatio < 3) {
     document.getElementById('skew-3sigma').style.display = "";
   }
   else if (!isNaN(alpha)) {
@@ -482,10 +519,10 @@ function updateSkew() {
 
   data = document.getElementById('skewGraph').data;
   data[0]['x'] = [alpha - 90];
-  data[0]['error_x']['array'] = [2 * alphaSigma];
+  data[0]['error_x']['array'] = [isFinite(alphaSigma) ? 2 * alphaSigma : 0];
 
   data[1]['x'] = [alpha - 90];
-  data[1]['error_x']['array'] = [alphaSigma];
+  data[1]['error_x']['array'] = [isFinite(alphaSigma) ? alphaSigma : 0];
 
   Plotly.redraw('skewGraph');
   //document.getElementById('skewFeedback').innerHTML = str;
@@ -534,7 +571,12 @@ function updateMean() {
   for (let ii = 0; ii < 28; ii++) {
     let w = extractRowVector(ii, [3, 4, 5]);
     let s = calculateSum(mult(w, w.map((x) => x > 0)));
-    mean[ii] = s / numValidMeasurements[ii];
+    if (numValidMeasurements[ii] > 0) {
+      mean[ii] = s / numValidMeasurements[ii];
+    }
+    else {
+      mean[ii] = NaN;
+    }
   }
 }
 
@@ -549,7 +591,7 @@ function updateSigma() {
       sigma[ii] = Math.sqrt(s2 / (numValidMeasurements[ii] - 1));
     }
     else {
-      sigma[ii] = 0;
+      sigma[ii] = NaN;
     }
   }
 }
@@ -566,14 +608,14 @@ function updateXYSteps() {
   let resultsx = 0;
   let resultsy = 0;
   if (marlincorexy) {
-    resultsx = calculateSum(mult(nominal.slice(0, 20), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(0, 20));
+    resultsx = calculateSum(mult(nominal.slice(0, 20), mean.slice(0, 20).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(0, 20)), 1e-12);
     //let xsteps  =
     resultsy = resultsx;
   }
   else {
-    resultsx = calculateSum(mult(nominal.slice(0, 10), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(0, 10));
+    resultsx = calculateSum(mult(nominal.slice(0, 10), mean.slice(0, 10).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(0, 10)), 1e-12);
     //let xsteps  =
-    resultsy = calculateSum(mult(nominal.slice(10, 20), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(10, 20));
+    resultsy = calculateSum(mult(nominal.slice(10, 20), mean.slice(10, 20).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(10, 20)), 1e-12);
   }
   xstep = (xstep * resultsx).toFixed(3);
   ystep = (ystep * resultsy).toFixed(3);
@@ -598,14 +640,14 @@ function updateXYRotation() {
   let resultsx = 0;
   let resultsy = 0;
   if (klippercorexy) {
-    resultsx = calculateSum(mult(nominal.slice(0, 20), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(0, 20));
+    resultsx = calculateSum(mult(nominal.slice(0, 20), mean.slice(0, 20).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(0, 20)), 1e-12);
     //let xsteps  =
     resultsy = resultsx;
   }
   else {
-    resultsx = calculateSum(mult(nominal.slice(0, 10), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(0, 10));
+    resultsx = calculateSum(mult(nominal.slice(0, 10), mean.slice(0, 10).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(0, 10)), 1e-12);
     //let xsteps  =
-    resultsy = calculateSum(mult(nominal.slice(10, 20), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(10, 20));
+    resultsy = calculateSum(mult(nominal.slice(10, 20), mean.slice(10, 20).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(10, 20)), 1e-12);
   }
   xstep = (xstep / resultsx).toFixed(3);
   ystep = (ystep / resultsy).toFixed(3);
@@ -626,7 +668,7 @@ function updateXYRotation() {
  */
 function updateShrinkage() {
 
-  results = calculateSum(mult(nominal.slice(0, 20), mean.map((x) => !isNaN(x)))) / calculateSum(mean.slice(0, 20));
+  results = calculateSum(mult(nominal.slice(0, 20), mean.slice(0, 20).map((x) => !isNaN(x)))) / Math.max(calculateSum(mean.slice(0, 20)), 1e-12);
 
   let shrinkage = Number(document.getElementById('oldShrinkage').value);
   if (shrinkage == 0) { shrinkage = 100 }; //use placeholder
@@ -710,8 +752,8 @@ function validateMeasurements() {
   let validD = calculateSum(mean.slice(20, 24)) > 0;
   let validd = calculateSum(mean.slice(24, 28)) > 0;
 
-  validDimensions = validx & validy;
-  validSkew = validx & validy & validD & validd;
+  validDimensions = validx && validy;
+  validSkew = validx && validy && validD && validd;
 
   // determine if any measurements are off nominal
   let cols = ['D', 'E', 'F']
@@ -838,7 +880,7 @@ function showMeasurementWarnings() {
     document.getElementById('skewFeedback').style.display = "none";
   }
 
-  if (!offNominal & validDimensions & validSkew & innerOuter) {
+  if (!offNominal && validDimensions && validSkew && innerOuter) {
     document.getElementById('measurementWarnings').style.display = "none";
     document.getElementById('valideverything').style.display = "";
 
@@ -871,4 +913,4 @@ function updateMaterial() {
 
 }
 
-window.onload = changeNumMeasPts();
+window.onload = changeNumMeasPts;

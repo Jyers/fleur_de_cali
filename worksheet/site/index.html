@@ -1,0 +1,1604 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Calistar - Parametric 3D Printer Calibration Tool</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/style.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#calistar-calibration-worksheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Calistar - Parametric 3D Printer Calibration Tool" class="md-header__button md-logo" aria-label="Calistar - Parametric 3D Printer Calibration Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z"></path>
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5"></path>
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z"></path>
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25"></path>
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Calistar - Parametric 3D Printer Calibration Tool
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo" aria-label="Switch to system preference" type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5M7 15a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Calistar - Parametric 3D Printer Calibration Tool" class="md-nav__button md-logo" aria-label="Calistar - Parametric 3D Printer Calibration Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z"></path>
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5"></path>
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z"></path>
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25"></path>
+</svg>
+
+    </a>
+    Calistar - Parametric 3D Printer Calibration Tool
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-print-worksheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-print Worksheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dimensionality-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensionality Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dimensionality Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-fix-your-printers-dimensionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to fix your printer's dimensionality
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skew-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skew Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skew Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-fix-your-printers-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to fix your printer's skew
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-print-worksheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-print Worksheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dimensionality-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dimensionality Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dimensionality Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-fix-your-printers-dimensionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to fix your printer's dimensionality
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skew-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skew Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skew Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-fix-your-printers-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to fix your printer's skew
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="javascript/jexcel.js"></script>
+<script src="javascript/jsuites.js"></script>
+<p><link rel="stylesheet" href="stylesheets/jexcel.css" type="text/css">
+<link rel="stylesheet" href="stylesheets/jsuites.css" type="text/css"></p>
+<h1 id="calistar-calibration-worksheet">Calistar Calibration Worksheet<a class="headerlink" href="#calistar-calibration-worksheet" title="Permanent link">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This worksheet is currently a work in progress! It should have full functionality, but that functionality may have bugs or errors. Please report any bugs you find on the issue tracker.</p>
+</div>
+<h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link">¶</a></h2>
+<p>This worksheet assumes your printer is already set up and you are able to complete a print. If you have not done so (e.g. are just finishing building a Prusa i3 or Voron build from scratch), please ensure that you can successfully print an object before proceeding.</p>
+<p>Some links and tips:</p>
+<ul>
+<li><a href="https://github.com/dirtdigger/fleur_de_cali">GitHub</a> - always has the latest version of the calculator</li>
+<li><a href="https://github.com/dirtdigger/fleur_de_cali">Wiki</a> - Contains hints, tips, and documentation for Calistar</li>
+<li>Hover tips — indicated by a <span class="twemoji" title="Lots and lots of important information. Lots and lots of important information. Lots and lots of important information. Lots and lots of important information. Lots and lots of important information. Lots and lots of important information."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span> symbol — are available to help clarify things that might need a little bit of extra explanation.</li>
+<li>gcode and Klipper <code>printer.cfg</code> snippets can be copied to your clipboard by clicking the icon on the right of the codeblock.</li>
+</ul>
+<h2 id="your-parameters">Your Parameters<a class="headerlink" href="#your-parameters" title="Permanent link">¶</a></h2>
+<p>Calistar is a <em>parametric</em> calibration tool. This worksheet needs to know what parameters you've printed with. Please review the table below and update its contents prior to calibrating your printer.</p>
+<table>
+<tbody><tr>
+<td> Total width (mm) <span class="twemoji" title="If you printed 'calistar_MxN.stl', then this is the value of M&lt;br&gt;Default: 120"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span>
+</td>
+<td> <input type="number" value="120" id="calistarSize" size="5" onchange="setNominals()"> mm
+</td>
+</tr>
+<tr>
+<td> Number of measurement points <span class="twemoji" title="If you printed 'calistar_MxN.stl', then this is the value of N&lt;br&gt;Default: 3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span>
+</td>
+<td>
+<select id="numMeasPts" name="numMeasPts" onchange="changeNumMeasPts()">
+<option>2</option>
+<option selected="selected">3</option>
+<option>4</option>
+<option>5</option>
+</select>
+</td>
+</tr>
+<tr>
+<td> Slicer Scaling <span class="twemoji" title="If you didn't scale the model in your slicer, keep this as a 1. &lt;br&gt;Note: slicer scaling is NOT recommended.&lt;br&gt;Default: 1.00"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span>
+</td>
+<td> <input type="number" value="1.00" id="printScale" step="0.01" onchange="setNominals()">
+</td>
+</tr>
+<tr>
+<td> Caliper error (mm) <span class="twemoji" title="How accurate your calipers are. Note: digital calipers, even though they read to the nearest 0.01mm, are often only actually accurate to 0.02mm&lt;br&gt;Default: 0.01 mm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span>
+</td>
+<td> <input type="number" value="0.01" id="caliper_error" step="0.01"> mm
+</td>
+</tr>
+<tr>
+<td>
+Use Sample Error <span class="twemoji" title="If checked, the worksheet will supplement the error estimate in your calipers by calculating a sample variance&lt;br&gt; Default: checked"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span>
+</td>
+<td> <input type="checkbox" value="" id="sample_error" checked onchange="updateSigma()">
+</td>
+</tr>
+</tbody></table>
+<h2 id="post-print-worksheet">Post-print Worksheet<a class="headerlink" href="#post-print-worksheet" title="Permanent link">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Allow the print to <em>cool completely</em>. Then, remove it from the bed prior to measuring. Failure to do either of these steps could result in poor results.</p>
+</div>
+<p>Please see <a href="https://github.com/dirtdigger/fleur_de_cali/wiki/Measuring">this wiki page</a> for additional tips on orienting the print and measuring hints.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="img/meas_pts_3.svg" data-desc-position="bottom" data-gallery="measpts"><img alt="calistar_MxN measurement points" data-gallery="measpts" height="auto" id="calistar_MxN" src="img/meas_pts_3.svg" style="float:left;margin-right: 20px;margin-top: 7px;" width="200px"></a></p>
+<div>
+<p>Along each axis, measurements work from the outside in (see figure on left — click on it to zoom). Measure in this order:</p>
+<ol>
+<li>
+<p>x-axis outside   (horizontal in picture)</p>
+</li>
+<li>
+<p>x-axis inside    (horizontal in picture)</p>
+</li>
+<li>
+<p>y-axis outside   (vertical in picture)</p>
+</li>
+<li>
+<p>y-axis inside    (vertical in picture)</p>
+</li>
+<li>
+<p>Diagonals    (Capital D first, then lowercase d)</p>
+</li>
+</ol>
+</div>
+<div id="spreadsheet"></div>
+
+<script>
+
+var changed = function(instance, cell, x, y, value) {
+
+    update();
+}
+
+
+
+var data = [
+    ['Outer', 'X', '1', '', '', '', '120', '=AVERAGE(D1:F1)'],
+    ['Outer', 'X', '2', '', '', '', '100', '=AVERAGE(D2:F2)'],
+    ['Outer', 'X', '3', '', '', '', '80' , '=AVERAGE(D3:F3)'],
+    ['Outer', 'X', '4', '', '', '', '60' , '=AVERAGE(D4:F4)'],
+    ['Outer', 'X', '5', '', '', '', '40' , '=AVERAGE(D5:F5)'],
+    ['Inner', 'X', '1', '', '', '', '120', '=AVERAGE(D6:F6)'],
+    ['Inner', 'X', '2', '', '', '', '100', '=AVERAGE(D7:F7)'],
+    ['Inner', 'X', '3', '', '', '', '80' , '=AVERAGE(D8:F8)'],
+    ['Inner', 'X', '4', '', '', '', '60' , '=AVERAGE(D9:F9)'],
+    ['Inner', 'X', '5', '', '', '', '40' , '=AVERAGE(D10:F10)'],
+    ['Outer', 'Y', '1', '', '', '', '120', '=AVERAGE(D11:F11)'],
+    ['Outer', 'Y', '2', '', '', '', '100', '=AVERAGE(D12:F12)'],
+    ['Outer', 'Y', '3', '', '', '', '80' , '=AVERAGE(D13:F13)'],
+    ['Outer', 'Y', '4', '', '', '', '60' , '=AVERAGE(D14:F14)'],
+    ['Outer', 'Y', '5', '', '', '', '40' , '=AVERAGE(D15:F15)'],
+    ['Inner', 'Y', '1', '', '', '', '120', '=AVERAGE(D16:F16)'],
+    ['Inner', 'Y', '2', '', '', '', '100', '=AVERAGE(D17:F17)'],
+    ['Inner', 'Y', '3', '', '', '', '80' , '=AVERAGE(D18:F18)'],
+    ['Inner', 'Y', '4', '', '', '', '60' , '=AVERAGE(D19:F19)'],
+    ['Inner', 'Y', '5', '', '', '', '40' , '=AVERAGE(D20:F20)'],
+    ['Outer', 'D' ,'1', '', '', '', '120', '=AVERAGE(D21:F21)'],
+    ['Outer', 'D' ,'2', '', '', '', '100', '=AVERAGE(D22:F22)'],
+    ['Outer', 'D' ,'3', '', '', '', '80' , '=AVERAGE(D23:F23)'],
+    ['Outer', 'D' ,'4', '', '', '', '60' , '=AVERAGE(D24:F24)'],
+    ['Outer', 'd' ,'1', '', '', '', '120', '=AVERAGE(D25:F25)'],
+    ['Outer', 'd' ,'2', '', '', '', '100', '=AVERAGE(D26:F26)'],
+    ['Outer', 'd' ,'3', '', '', '', '80' , '=AVERAGE(D27:F27)'],
+    ['Outer', 'd' ,'4', '', '', '', '60' , '=AVERAGE(D28:F28)']
+];
+
+let worksheet = jspreadsheet(document.getElementById('spreadsheet'), {
+    data:data,
+    columns: [
+        { type: 'text', title:'Type', width:80, readOnly: true },
+        { type: 'text', title:'Axis', width:60, readOnly: true  },
+        { type: 'text', title:'Location',  width:80, readOnly: true },
+        { type: 'numeric', title:'1', width:80 },
+        { type: 'numeric', title:'2', width:80 },
+        { type: 'numeric', title:'3', width:80},
+        { type: 'numeric', title:'Nominal (mm)', width:120, readOnly: true},
+        { type: 'numeric', title:'Avg. (mm)', width:100 , readOnly: true, format: '#,##0.00' }
+     ],
+     nestedHeaders:[
+            [
+                {
+                    title: 'Description',
+                    colspan: '3',
+                },
+                {
+                    title: 'Measurements (mm)',
+                    colspan: '3',
+                }
+            ],
+        ],
+     tableOverflow:true,
+     tableHeight:'400px',
+     onchange: changed,
+});
+
+worksheet.hideIndex();
+
+</script>
+
+<div id="measurementWarnings">
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Found the following issues:</p>
+<p><span id="validDimensions">You need more measurements to be able to correct the dimensions of your printer.</span></p>
+<p><span id="validSkew">You need more measurements to be able to correct the skew of your printer.</span></p>
+<p><span id="validInnerOuter">While not required, for best results please match each outer measurement with a corresponding inner measurement, and vice-versa.</span></p>
+<p><span id="outoffamily">At least one measurement looks off-nominal. Please double-check your measurements.</span></p>
+</div>
+</div>
+<div id="valideverything">
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>You've entered enough measurements to be able to estimate dimensional error and skew!</p>
+</div>
+</div>
+<!--<table style="overflow-y:scroll; height:500px;display:block;" id="measurements">
+  <tr>
+    <th rowspan=2> Direction </th>
+    <th rowspan=2> Location </th>
+    <th rowspan=2> Nominal value (mm) </th>
+    <th colspan=3 align="center"> Measurements (mm) </th>
+    <th rowspan=2> Average (mm) </th>
+  </tr>
+
+  <tr>
+    <th> 1 </th>
+    <th> 2 </th>
+    <th> 3 </th>
+  </tr>
+
+  <tr class="meas1">
+    <td> Outer X </td>
+    <td> 1 </td >
+    <td> <span class=nom1>120</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+    <td> <span id="avgX1Outer">120</span> </td>
+  </tr>
+
+  <tr>
+    <td> 2 </td >
+    <td> <span class=nom2>100</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+    <td> <span id="avgX2Outer">120</span> </td>
+  </tr>
+
+  <tr class="meas3">
+    <td> 3 </td >
+    <td> <span class=nom3>80</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas4">
+    <td> 4 </td >
+    <td> <span class=nom4>60</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas5">
+    <td> 5 </td >
+    <td> <span class=nom5>40</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+
+  <tr class="meas1">
+    <td> Inner X </td>
+    <td> 1 </td >
+    <td> <span class=nom1>120</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr>
+    <td> 2 </td >
+    <td> <span class=nom2>100</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas3">
+    <td> 3 </td >
+    <td> <span class=nom3>80</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas4">
+    <td> 4 </td >
+    <td> <span class=nom4>60</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas5">
+    <td> 5 </td >
+    <td> <span class=nom5>40</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+
+  <tr class="meas1">
+    <td> Outer Y </td>
+    <td> 1 </td >
+    <td> <span class=nom1>120</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr>
+    <td> 2 </td >
+    <td> <span class=nom2>100</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas3">
+    <td> 3 </td >
+    <td> <span class=nom3>80</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas4">
+    <td> 4 </td >
+    <td> <span class=nom4>60</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas5">
+    <td> 5 </td >
+    <td> <span class=nom5>40</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+
+  <tr class="meas1">
+    <td> Inner Y </td>
+    <td> 1 </td >
+    <td> <span class=nom1>120</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr>
+    <td> 2 </td >
+    <td> <span class=nom2>100</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas3">
+    <td> 3 </td >
+    <td> <span class=nom3>80</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas4">
+    <td> 4 </td >
+    <td> <span class=nom4>60</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas5">
+    <td> 5 </td >
+    <td> <span class=nom5>40</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+  <tr class="diag1">
+    <td> Diag D </td>
+    <td> 1 </td >
+    <td> <span class=nom1>120</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas3">
+    <td> 2 </td >
+    <td> <span class=nom2>100</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas4">
+    <td> 3 </td >
+    <td> <span class=nom3>80</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas5">
+    <td> 4 </td >
+    <td> <span class=nom4>60</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+
+  <tr class="diag1">
+    <td> Diag d </td>
+    <td> 1 </td >
+    <td> <span class=nom1>120</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+  <tr class="meas3">
+    <td> 2 </td >
+    <td> <span class=nom2>100</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas4">
+    <td> 3 </td >
+    <td> <span class=nom3>80</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+  <tr class="meas5">
+    <td> 4 </td >
+    <td> <span class=nom4>60</span> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x_outer_meas[0][0]" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas2" /> </td>
+    <td> <input class="meascell" value="" placeholder="&mdash;" id="x1_outer_meas3" /> </td>
+  </tr>
+
+
+
+</table>-->
+
+<h2 id="dimensionality-results">Dimensionality Results<a class="headerlink" href="#dimensionality-results" title="Permanent link">¶</a></h2>
+<p>Here are your printer's dimensionality results. The goal of this tool is to help you get each axis' error to within 2-sigmas of 0%.</p>
+<div id="dimensionFeedback">
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>There appears to be something wrong with your inputted measurements, and the results in the table and the advice given below should not be trusted. Please ensure your measurements are valid above.</p>
+</div>
+</div>
+<div id="dimGraph" style="width:600px;height:250px;"></div>
+<script>
+
+var trace1 = {
+  x: [0,1],
+  y: ['y-axis', 'x-axis'],
+  mode: 'markers',
+  name: '2-sigma',
+  error_x: {
+    type: 'data',
+    array: [1,2],
+    color: '#000000',
+    thickness: 1.0,
+    width: 5,
+    opacity: 1
+  },
+  marker: {
+    color: '#1f77b4',
+    size: 1
+  },
+  type: 'scatter'
+};
+
+var trace2 = {
+  x: [0,1],
+  y: ['y-axis', 'x-axis'],
+  mode: 'markers',
+  name: '1-sigma',
+  error_x: {
+    type: 'data',
+    array: [0.5,1],
+    color: '#1f77b4',
+    thickness: 4.5,
+    width: 10,
+    opacity: 1
+  },
+  marker: {
+    color: '#1f77b4',
+    size: 10
+  },
+  type: 'scatter'
+};
+
+var data = [trace1, trace2];
+
+var layout = {xaxis: {
+    showgrid: false,
+    zeroline: true,
+    title   : "Relative error (%)"
+},
+yaxis: {
+    showgrid: false,
+    showline: false,
+    dash: 'dash'
+
+},
+title: {text:'Dimensional Error'}
+}
+
+
+Plotly.newPlot('dimGraph', data, layout, {showSendToCloud: true});
+
+</script>
+
+<table>
+    <tbody><tr>
+        <th colspan="4">Dimensional Correctness
+        </th>
+    </tr>
+
+    <tr>
+        <th>Axis</th>
+        <th>Error Estimate</th>
+        <th>Correction</th>
+        <th>1σ estimate</th>
+        <th>#σ off-nominal</th>
+    </tr>
+
+    <tr>
+        <td>X</td>
+        <td class="xdim"><span id="xerror">N/A</span></td>
+        <td class="xdim"><span id="xcorrection">N/A</span></td>
+        <td class="xdim"><span id="xsigma">N/A</span></td>
+        <td class="xdim"><span id="xNumSigma">N/A</span></td>
+    </tr>
+
+    <tr>
+        <td>Y</td>
+        <td class="xdim"><span id="yerror">N/A</span></td>
+        <td class="xdim"><span id="ycorrection">N/A</span></td>
+        <td class="xdim"><span id="ysigma">N/A</span></td>
+        <td class="xdim"><span id="yNumSigma">N/A</span></td>
+    </tr>
+</tbody></table>
+
+<div id="dimension-1sigma" style="display: none;">
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Your printer is calibrated to within one standard deviation. Hooray!</p>
+</div>
+</div>
+<div id="dimension-2sigma" style="display: none;">
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Your printer is calibrated to within two standard deviations. You can try to make adjustments, but they may or may not make a difference.</p>
+</div>
+</div>
+<div id="dimension-3sigma" style="display: none;">
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Your printer is calibrated to within three standard deviations. You should probably try to make some adjustments.</p>
+</div>
+</div>
+<div id="dimensionFailure" style="display: none;">
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>At least one of your axes is more than three standard deviations away from nominal. Your printer's dimensions are not yet calibrated.</p>
+</div>
+</div>
+<p>Please read <a href="https://github.com/dirtdigger/fleur_de_cali/wiki/Dimensionality">this wiki page</a> for help interpreting the results.</p>
+<h3 id="how-to-fix-your-printers-dimensionality">How to fix your printer's dimensionality<a class="headerlink" href="#how-to-fix-your-printers-dimensionality" title="Permanent link">¶</a></h3>
+<div id="dimensionsLookGood" style="display:none;">
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Your print came out to within two standard deviations of nominal in each direction. You don't necessarily need to make any of the adjustments from this section, but you are welcome to if desired.</p>
+</div>
+</div>
+<div id="dimensionNeedAdjusted" style="display:none;">
+<p>There are two possible reasons that the dimensionality of a print could be off -- shrinkage and miscalibrated stepper motors. Please see <a href="https://github.com/dirtdigger/fleur_de_cali/wiki/Dimensionality#how-does-calistars-spreadsheet-determine-if-its-shrinkage">this section</a> of the wiki for further discussion of these two effects. Below is some advice based on the outcome of your print.</p>
+<div id="possibleShrinkage" style="display:none;">
+<p>Your print appears to be smaller than nominal, but not so small as to rule out shrinkage. To help you understand the <em>probable</em> reason that your print is off, please select the filament you printed with from the dropdown below.</p>
+<table>
+<tbody><tr>
+<td>
+Print Material <span class="twemoji" title="This is used to help determine whether you're likely experiencing shrinkage.&lt;br&gt; Default: PLA"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span>
+</td>
+<td>
+<select id="materials" name="materials" onchange="updateMaterial()">
+<option selected="selected">PLA</option>
+<option>PETG</option>
+<option>ABS</option>
+<option>Other</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>Max expected shrinkage<span class="twemoji" title="What percentage of shrinkage you'd typically expect from the selected material due cooling down from the typical print temperature."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span></td>
+<td id="expectedShrinkage"></td>
+</tr>
+<tr>
+<td>Your error (x, y)</td>
+<td id="yourCorrection"></td>
+</tr>
+</tbody></table>
+</div>
+<div id="printTooBig" style="display:none;">
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Your print came out bigger than nominal, so you are not likely to be facing shrinkage. It is recommended that you adjust your x- and y-steps in your printer's firmware (Klipper or Marlin) using the instructions below.</p>
+</div>
+</div>
+<div id="probableShrinkage" style="display:none;">
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Your print came out smaller than nominal. Based on your selected materials, it appears to fall within the bounds of probable shrinkage due to cooling. It is recommended that you adjust your shrinkage factor in your slicer, or scale up the print to compensate.</p>
+</div>
+</div>
+<div id="probablyNotShrinkage" style="display:none;">
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Your print came out smaller than nominal. However, based on your inputted dimensions and selected materials, this is probably not shrinkage. It is recommended that you adjust your x- and y-steps in your printer's firmware (Klipper or Marlin) using the instructions below.</p>
+</div>
+</div>
+</div>
+<p>Should you decide to adjust your settings to fix the dimensionality of the print, please expand the relevant subsection below for detailed instructions. Please note that only Klipper and Marlin are supported firmwares currently. RepRap support is planned.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">SuperSlicer/OrcaSlicer/BambuStudio/Cura</label><label for="__tabbed_1_2">Other Slicers</label><label for="__tabbed_1_3">Klipper</label><label for="__tabbed_1_4">Marlin</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>These slicers have per-filament shrinkage compensation built in! As of writing (September, 2024), PrusaSlicer is not included in this group.</p>
+<ol>
+<li>
+<p>Get your current shrinkage value from your slicer</p>
+<p>SuperSlicer: Filament settings -&gt; Filament -&gt; Shrinkage</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="img/superslicer_shrinkage.png" data-desc-position="bottom"><img alt="SuperSlicer" src="img/superslicer_shrinkage.png" title="SuperSlicer"></a></p>
+<p>OrcaSlicer/BambuStudio: Filament settings -&gt; Filament -&gt; Shrinkage</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="img/orcaslicer_shrinkage.png" data-desc-position="bottom"><img alt="OrcaSlicer" src="img/orcaslicer_shrinkage.png" title="OrcaSlicer"></a></p>
+<p>Cura: search for "shrinkage"</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="img/cura_shrinkage.png" data-desc-position="bottom"><img alt="CuraSlicer" src="img/cura_shrinkage.png" title="cura"></a></p>
+</li>
+<li>
+<p>If you already have a shrinkage value, enter your current shrinkage setting (otherwise, keep the default value).</p>
+<p>Current shrinkage setting: <input value="" placeholder="100" id="oldShrinkage" onchange="updateShrinkage()" size="5">%</p>
+</li>
+<li>
+<p>Your adjusted shrinkage setting is: <span id="shrinkage">N/A</span>. Make sure you save your filament profile!</p>
+</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<p>As a last ditch effort that works for any slicer, you can scale up your parts to account for shrinkage. Note, however, that this must be done for every part you slice.</p>
+<p>Scale your model to: <span id="slicerscaling">NaN</span>%</p>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>
+<p>In your <code>printer.cfg</code>, find and enter your current values for rotation_distance. (Note: the placeholder suggestion of 40 mm is for an LDO Motors Voron 2.4 kit).</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th><em>Current</em> <code>rotation_distance</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[stepper_x]</code></td>
+<td><input value="" placeholder="40.000" id="oldStepperX" onchange="updateXYRotation()"></td>
+</tr>
+<tr>
+<td><code>[stepper_y]</code></td>
+<td><input value="" placeholder="40.000" id="oldStepperY" onchange="updateXYRotation()"></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>If your printer is CoreXY, check the box below. <span class="twemoji" title="CoreXY behaves differently from cartesian. The x-direction is a mix of A and B motors, and similarly for y. Checking this will average the dimensionality error across both A and B motors."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span></p>
+<p>CoreXY movement: <input type="checkbox" value="" id="klippercorexy" checked onchange="updateXYRotation()"></p>
+</li>
+<li>
+<p>Your printer's corrected values are as follows:</p>
+<p>In section <code>[stepper_x]</code>:</p>
+<div id="klipper_stepper_x" class="language-text highlight"><pre><span></span><code><span id="__span-klipper_stepper_x-1"><a id="__codelineno-klipper_stepper_x-1" name="__codelineno-klipper_stepper_x-1" href="#__codelineno-klipper_stepper_x-1"></a>rotation_distance: 40.000
+</span></code></pre></div>
+<p>In section <code>[stepper_y]</code>:</p>
+<div id="klipper_stepper_y" class="language-text highlight"><pre><span></span><code><span id="__span-klipper_stepper_y-1"><a id="__codelineno-klipper_stepper_y-1" name="__codelineno-klipper_stepper_y-1" href="#__codelineno-klipper_stepper_y-1"></a>rotation_distance: 40.000
+</span></code></pre></div>
+</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>
+<p>In a console, type <a href="https://marlinfw.org/docs/gcode/M092.html">M92</a> into a console to get your current X- and Y-steps per mm and enter them below.</p>
+<table>
+<thead>
+<tr>
+<th>Axis</th>
+<th><em>Current</em> Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td><input value="" placeholder="80.000" id="xstep" onchange="updateXYSteps()"></td>
+</tr>
+<tr>
+<td>Y</td>
+<td><input value="" placeholder="80.000" id="ystep" onchange="updateXYSteps()"></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>If your printer is CoreXY, check the box below. <span class="twemoji" title="CoreXY behaves differently from cartesian. The x-direction is a mix of A and B motors, and similarly for y. Checking this will average the dimensionality error across both A and B motors."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"></path></svg></span></p>
+<p>CoreXY movement: <input type="checkbox" value="" id="marlincorexy" checked onchange="updateXYSteps()"></p>
+</li>
+<li>
+<p>In a console, paste the following:</p>
+<div id="marlindimensions" class="language-text highlight"><pre><span></span><code><span id="__span-marlindimensions-1"><a id="__codelineno-marlindimensions-1" name="__codelineno-marlindimensions-1" href="#__codelineno-marlindimensions-1"></a>M92 X80 Y80; updates x- and y-steps with your values
+</span></code></pre></div>
+</li>
+<li>
+<p>You should see "Recv. ok". Then type
+    </p><div class="language-gcode highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">M500</span>
+</span></code></pre></div><p></p>
+<p>in your console to save the new settings.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<h2 id="skew-results">Skew Results<a class="headerlink" href="#skew-results" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some printers such as the Prusa i3 MK3S+ have the ability to measure and correct this on their own. If you use such a printer, you can skip this step. Others, e.g. Bambulab printers and the Prusa Mini, do not have a way to compensate skew. Thus this measurement is for informational purposes only for those printers.</p>
+</div>
+<div id="skewFeedback">
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>There appears to be something wrong with your inputted measurements, and the results in the table and the advice given below should not be trusted. Please ensure your measurements along the x-axis, y-axis, D-axis, and d-axis are valid above.</p>
+</div>
+</div>
+<p>Here are your printer's skew results. The goal of this tool is to help you get your skew to within 2-sigmas of 0°.</p>
+<div id="skewGraph" style="width:600px;height:250px;"></div>
+<script>
+
+var trace1 = {
+  x: [0],
+  y: ['skew'],
+  mode: 'markers',
+  name: '2-sigma',
+  error_x: {
+    type: 'data',
+    array: [1],
+    color: '#000000',
+    thickness: 1.0,
+    width: 5,
+    opacity: 1
+  },
+  marker: {
+    color: '#1f77b4',
+    size: 1
+  },
+  type: 'scatter'
+};
+
+var trace2 = {
+  x: [0],
+  y: ['skew'],
+  mode: 'markers',
+  name: '1-sigma',
+  error_x: {
+    type: 'data',
+    array: [0.5],
+    color: '#1f77b4',
+    thickness: 4.5,
+    width: 10,
+    opacity: 1
+  },
+  marker: {
+    color: '#1f77b4',
+    size: 10
+  },
+  type: 'scatter'
+};
+
+var data = [trace1, trace2];
+
+var layout = {xaxis: {
+    showgrid: false,
+    zeroline: true,
+    title   : "Skew angle (degrees)"
+},
+yaxis: {
+    showgrid: false,
+    showline: false,
+    dash: 'dash'
+
+},
+title: {text:'Skew angle'}
+}
+
+
+Plotly.newPlot('skewGraph', data, layout, {showSendToCloud: true});
+
+</script>
+
+<table>
+    <tbody><tr>
+        <th colspan="4">Printer Skew
+        </th>
+    </tr>
+
+    <!--<tr>
+        <th>Quantity</th>
+        <th>Calculated</th>
+        <th>Correction</th>
+        <th>1&sigma; estimate</th>
+        <th>#&sigma; off-nominal</th>
+
+    </tr>
+
+    <tr>
+        <td>Angle of Parallelogram</td>
+        <td class="xdim"><span id="parAngle">N/A</span></td>
+        <td class="xdim"><span id="parCorrection">N/A</span></td>
+        <td class="xdim"><span id="parSigma">N/A</span></td>
+        <td class="xdim"><span id="parNumSigmas">N/A</span></td>
+
+    </tr>
+
+    <tr>
+        <td>Skew Angle</td>
+        <td class="xdim"><span id="skewAngle">N/A</span></td>
+        <td class="xdim"><span id="skewCorrection">N/A</span></td>
+        <td class="xdim"><span id="skewSigma">N/A</span></td>
+        <td class="xdim"><span id="skewNumSigmas">N/A</span></td>
+    </tr>-->
+
+    <tr>
+        <th>Quantity</th>
+        <td>Parallelogram angle (°)</td>
+        <td>Skew (°)</td>
+        <td>Correction (°)</td>
+        <td>1σ estimate (°)</td>
+        <td>#σ off-nominal</td>
+
+    </tr>
+
+    <tr>
+        <th>Value</th>
+        <td class="xdim"><span id="parAngle">N/A</span></td>
+        <td class="xdim"><span id="skewAngle">N/A</span></td>
+        <td class="xdim"><span id="skewCorrection">N/A</span></td>
+        <td class="xdim"><span id="skewSigma">N/A</span></td>
+        <td class="xdim"><span id="skewNumSigmas">N/A</span></td>
+
+    </tr>
+
+
+
+    <!--<tr>
+        <th>Quantity</th>
+        <th>Value</th>
+    </tr>
+
+    <tr>
+        <td>Angle of Parallelogram</td>
+        <td class="xdim"><span id="parAngle">N/A</span></td>
+    </tr>
+
+    <tr>
+        <td>Skew angle</td>
+        <td class="xdim"><span id="skewAngle">N/A</span></td>
+    </tr>
+
+    <tr>
+        <td>Correction</td>
+        <td class="xdim"><span id="skewCorrection">N/A</span></td>
+    </tr>
+
+    <tr>
+        <td>1&sigma; estimate</td>
+        <td class="xdim"><span id="skewSigma">N/A</span></td>
+    </tr>
+
+    <tr>
+        <td>#&sigma; off-nominal</td>
+        <td class="xdim"><span id="skewNumSigmas">N/A</span></td>
+    </tr>-->
+
+
+
+
+</tbody></table>
+
+<div id="skew-1sigma" style="display: none;">
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Your printer doesn't seem to be skewed in any meaningful way. Hooray!</p>
+</div>
+</div>
+<div id="skew-2sigma" style="display: none;">
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Your printer's skew is calibrated to within two standard deviations. You can try to make adjustments, but they may or may not make a difference.</p>
+</div>
+</div>
+<div id="skew-3sigma" style="display: none;">
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Your printer's skew is calibrated to within three standard deviations. You should probably try to make some adjustments.</p>
+</div>
+</div>
+<div id="skewFailure" style="display: none;">
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>Your printer is almost definitely skewed. You should try to fix it if your model supports it.</p>
+</div>
+</div>
+<p>Please read <a href="https://github.com/dirtdigger/fleur_de_cali/wiki/Skew">this wiki page</a> for additional information involving skew.</p>
+<h3 id="how-to-fix-your-printers-skew">How to fix your printer's skew<a class="headerlink" href="#how-to-fix-your-printers-skew" title="Permanent link">¶</a></h3>
+<p>How you go about fixing your skew depends on the type of firmware you are running. Currently only Klipper and Marlin are supported, but RepRap support is planned.</p>
+<p>Select the relevant subsection below to get instructions on how to proceed.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Klipper</label><label for="__tabbed_2_2">Marlin</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>See the <a href="https://www.klipper3d.org/Skew_Correction.html">Klipper documentation</a> for details. Please read it to understand what you are doing!</p>
+<p>If you have already applied skew correction to this plane, please enter the results of that below. Otherwise, you can leave these as blanks for now. (Hint: Check your printer.cfg if you're not sure).</p>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>Old Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC</td>
+<td><input value="" placeholder="(blank)" id="oldAC" onchange="updateSkewKlipper()"></td>
+</tr>
+<tr>
+<td>BD</td>
+<td><input value="" placeholder="(blank)" id="oldBD" onchange="updateSkewKlipper()"></td>
+</tr>
+<tr>
+<td>AD</td>
+<td><input value="" placeholder="(blank)" id="oldAD" onchange="updateSkewKlipper()"></td>
+</tr>
+<tr>
+<td>Correction</td>
+<td><span id="oldCorrection">0</span>°</td>
+</tr>
+</tbody>
+</table>
+<p>Your updated net length parameters are listed below. Keep these numbers handy if you want to iterate the skew correction process!</p>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>New Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC</td>
+<td><span id="newAC"></span></td>
+</tr>
+<tr>
+<td>BD</td>
+<td><span id="newBD"></span></td>
+</tr>
+<tr>
+<td>AD</td>
+<td><span id="newAD"></span></td>
+</tr>
+<tr>
+<td>Correction</td>
+<td><span id="totalCorrection">0</span>°</td>
+</tr>
+</tbody>
+</table>
+<p>To fix your printer's skew:</p>
+<ol>
+<li>
+<p>Ensure [skew_correction] is set in your <code>printer.cfg</code></p>
+</li>
+<li>
+<p>Your skew correction gcode is below. Copy and paste it into a console.</p>
+<div id="klipperskew" class="language-text highlight"><pre><span></span><code><span id="__span-klipperskew-1"><a id="__codelineno-klipperskew-1" name="__codelineno-klipperskew-1" href="#__codelineno-klipperskew-1"></a>SET_SKEW XY=100,100,70.71
+</span></code></pre></div>
+</li>
+<li>
+<p>Save your skew profile with</p>
+<div class="language-gcode highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SKEW_PROFILE SAVE=my_skew_profile
+</span></code></pre></div>
+</li>
+<li>
+<p>Finally, ensure that you load the skew profile, e.g. in your <code>PRINT_START</code> macro:</p>
+<div class="language-gcode highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>SKEW_PROFILE LOAD=my_skew_profile
+</span></code></pre></div>
+</li>
+</ol>
+<p>If you'd like to confirm that the skew has been calculated correctly, you can have Klipper calculate your skew directly by entering this into a console:</p>
+<div id="klippercalcskew" class="language-text highlight"><pre><span></span><code><span id="__span-klippercalcskew-1"><a id="__codelineno-klippercalcskew-1" name="__codelineno-klippercalcskew-1" href="#__codelineno-klippercalcskew-1"></a>CALC_MEASURED_SKEW AC=100 BD=100 AD=70.71
+</span></code></pre></div>
+<p>Finally, if you wish to delete an old skew profile, use <code>SKEW_PROFILE REMOVE=my_skew_profile</code> as per the Klipper instructions.</p>
+</div>
+<div class="tabbed-block">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although planned, skew cannot yet be iteratively tuned for Marlin with Calistar. Therefore, if you have Marlin-based firmware and have already attempted to correct your  skew, you should remove the correction before trying to fix it further.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>SKEW_CORRECTION</code> needs to be uncommented in your firmware's <code>Configuration.h</code>. Re-compiling Marlin is out of scope of this tool, but you can read about how to do it <a href="https://marlinfw.org/docs/configuration/configuration.html">by clicking here</a>.</p>
+</div>
+<p>See the <a href="https://marlinfw.org/docs/gcode/M852.html">Marlin documentation</a> for details. Please read it to understand what you are doing!</p>
+<p>Assuming your firmware has been compiled with <code>SKEW_CORRECTION</code> uncommented, you can simply paste the custom skew correction gcode below into a console.</p>
+<div id="marlinskew" class="language-text highlight"><pre><span></span><code><span id="__span-marlinskew-1"><a id="__codelineno-marlinskew-1" name="__codelineno-marlinskew-1" href="#__codelineno-marlinskew-1"></a>M582 I0; sets the skew factor
+</span><span id="__span-marlinskew-2"><a id="__codelineno-marlinskew-2" name="__codelineno-marlinskew-2" href="#__codelineno-marlinskew-2"></a>M500; saves the result to EEPROM
+</span></code></pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["content.tooltips", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="javascript/calibration.js"></script>
+      
+        <script src="javascript/jexcel.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
